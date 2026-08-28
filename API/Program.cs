@@ -1,4 +1,4 @@
-using DAO; // Acá registro los DAO
+using DAO; // Acï¿½ registro los DAO
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// REGISTRO DE INYECCIÓN DE DEPENDENCIAS DE LOS DAO
+// REGISTRO DE INYECCIoN DE DEPENDENCIAS DE LOS DAO
 
 builder.Services.AddScoped<PlayerDAO>();
 builder.Services.AddScoped<TeamDAO>();
