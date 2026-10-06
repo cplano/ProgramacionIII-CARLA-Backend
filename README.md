@@ -47,3 +47,28 @@ dotnet run --project API
 ```
 
 Swagger queda disponible en `/swagger`.
+
+## Login (BCrypt + DTOs + JWT)
+
+| Endpoint | Descripción | Respuestas |
+|---|---|---|
+| `POST /api/User/register` | Crea un usuario (la contraseña se guarda hasheada con BCrypt) | 201, 400, 409 (email repetido) |
+| `POST /api/User/login` | Recibe `{ email, password }` y devuelve `{ token, user }` | 200, 400, 401 |
+| `GET /api/User` | Lista de usuarios (requiere token) | 200, 401 |
+| `GET /api/User/{id}` | Un usuario (requiere token) | 200, 401, 404 |
+
+Archivos principales:
+
+- `Entities/User.cs`: entidad con atributos de validación.
+- `DAO/UserDAO.cs`: primer DAO que usa Entity Framework (MySQL real).
+- `API/DTOs/`: `LoginDTO`, `RegisterDTO`, `UserResponseDTO`, `LoginResponseDTO`.
+- `API/Helpers/PasswordHasher.cs`: BCrypt (`HashPassword` / `VerifyPassword`).
+- `API/Services/TokenService.cs`: genera el JWT firmado.
+- `API/Controllers/UserController.cs`: registro, login y endpoints protegidos con `[Authorize]`.
+- `API/Program.cs`: configuración de JWT, CORS (para Angular en `localhost:4200`) y Swagger con botón **Authorize**.
+
+Para probar los endpoints protegidos en Swagger: hacer login, copiar el `token`,
+tocar **Authorize** y pegarlo.
+
+El recorrido completo de los datos (Angular → API → MySQL → Angular) está explicado en
+el repo de frontend: `angular/primer-proyecto/RECORRIDO-LOGIN.md`.

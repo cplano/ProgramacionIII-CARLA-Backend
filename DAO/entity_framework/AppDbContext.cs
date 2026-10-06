@@ -28,5 +28,20 @@ namespace DAO.entity_framework
         public DbSet<Student> Students { get; set; }     // Tabla Students
         public DbSet<Course> Courses { get; set; }       // Tabla Courses
         public DbSet<Activity> Activities { get; set; }  // Tabla Activities
+
+        // Login
+        public DbSet<User> Users { get; set; }           // Tabla Users
+
+        // OnModelCreating permite configurar detalles de las tablas que EF no deduce solo.
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Regla de negocio: no puede haber dos usuarios con el mismo email.
+            // Se crea un INDICE UNICO: MySQL rechaza un INSERT con un email repetido.
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+        }
     }
 }
