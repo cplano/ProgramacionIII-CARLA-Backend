@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Configuracion de produccion (no exponer la base de datos)
+API/appsettings.json

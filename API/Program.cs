@@ -1,10 +1,17 @@
-using DAO; // Ac� registro los DAO
+using DAO; // Aca registro los DAO
+using DAO.entity_framework;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+// CONEXION A LA BASE DE DATOS (Entity Framework + MySQL)
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+builder.Services.AddDbContext<AppDbContext>(option =>
+    option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // REGISTRO DE INYECCIoN DE DEPENDENCIAS DE LOS DAO
 
