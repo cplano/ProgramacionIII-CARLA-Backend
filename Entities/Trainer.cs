@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Entities
 {
-    // En la clase Trainer, no se debe colocar los atributos xq se heredan automáticamente
+    // Trainer (entrenador) hereda de Person.
+    // No se colocan atributos porque Id, Name, Age y Dni se heredan automaticamente.
     public class Trainer : Person
     {
-        // Hereda Name, Age, Dni e Id de Person
-
     }
 }
