@@ -11,5 +11,9 @@ namespace Entities
         // En la base no es una columna: se arma con la columna TeamId de la tabla Players.
         // "= new List<Player>()" la inicializa vacia para que no sea null.
         public List<Player> Players { get; set; } = new List<Player>();
+
+        // Relacion UNO A MUCHOS: un equipo tiene uno o mas entrenadores (1..* en el diagrama).
+        // Igual que con Players, se arma con la columna TeamId de la tabla Trainers.
+        public List<Trainer> Trainers { get; set; } = new List<Trainer>();
     }
 }

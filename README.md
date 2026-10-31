@@ -48,6 +48,29 @@ dotnet run --project API
 
 Swagger queda disponible en `/swagger`.
 
+## Ejercicios 1 y 2: Entities, DAO y API
+
+Cada entidad de los ejercicios tiene su DAO (CRUD sobre `MockDatabase`) y su Controller:
+
+| Ejercicio | Entidad | DAO | Endpoints |
+|---|---|---|---|
+| 1 | Player | `PlayerDAO` | `/api/Player` |
+| 1 | Trainer | `TrainerDAO` | `/api/Trainer` |
+| 1 | Team (tiene `Players` y `Trainers`) | `TeamDAO` | `/api/Team` |
+| 2 | Student | `StudentDAO` | `/api/Student` |
+| 2 | Course | `CourseDAO` | `/api/Course` |
+| 2 | Activity | `ActivityDAO` | `/api/Activity` |
+
+Todos los controllers exponen:
+
+| Método | Ruta | Respuestas |
+|---|---|---|
+| `GET` | `/api/{Entidad}` | 200 |
+| `GET` | `/api/{Entidad}/{id}` | 200, 404 |
+| `POST` | `/api/{Entidad}` | 201, 400 |
+| `PUT` | `/api/{Entidad}/{id}` | 200, 404 |
+| `DELETE` | `/api/{Entidad}/{id}` | 204, 404 |
+
 ## Login (BCrypt + DTOs + JWT)
 
 | Endpoint | Descripción | Respuestas |

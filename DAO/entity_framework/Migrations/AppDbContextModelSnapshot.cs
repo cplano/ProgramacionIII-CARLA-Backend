@@ -52,7 +52,6 @@ namespace DAO.entity_framework.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Title")
@@ -186,7 +185,12 @@ namespace DAO.entity_framework.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<long?>("TeamId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Trainers");
                 });
@@ -266,6 +270,13 @@ namespace DAO.entity_framework.Migrations
                         .HasForeignKey("TeamId");
                 });
 
+            modelBuilder.Entity("Entities.Trainer", b =>
+                {
+                    b.HasOne("Entities.Team", null)
+                        .WithMany("Trainers")
+                        .HasForeignKey("TeamId");
+                });
+
             modelBuilder.Entity("Entities.Course", b =>
                 {
                     b.Navigation("Activities");
@@ -274,6 +285,8 @@ namespace DAO.entity_framework.Migrations
             modelBuilder.Entity("Entities.Team", b =>
                 {
                     b.Navigation("Players");
+
+                    b.Navigation("Trainers");
                 });
 #pragma warning restore 612, 618
         }

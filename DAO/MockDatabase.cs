@@ -21,10 +21,10 @@ namespace DAO
 
         public static List<Trainer> Trainers { get; set; } = new List<Trainer>
         {
-            new Trainer { Id = 1, Name = "Lionel Scaloni", Age = 45, Dni = "33333333" }
+            new Trainer { Id = 1, Name = "Lionel Scaloni", Age = 45, Dni = "33333333", TeamId = 1 }
         };
 
-        // El equipo con Id = 1 es al que apuntan los jugadores con TeamId = 1.
+        // El equipo con Id = 1 es al que apuntan los jugadores y el entrenador con TeamId = 1.
         public static List<Team> Teams { get; set; } = new List<Team>
         {
             new Team { Id = 1, Name = "Selección Argentina", Category = "Primera A" }

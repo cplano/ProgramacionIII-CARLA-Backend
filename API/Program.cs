@@ -36,9 +36,11 @@ builder.Services.AddDbContext<AppDbContext>(option =>
 // que lo pida en su constructor (no hace falta hacer "new PlayerDAO()").
 // AddScoped = se crea UNA instancia nueva por cada pedido HTTP.
 builder.Services.AddScoped<PlayerDAO>();
+builder.Services.AddScoped<TrainerDAO>();
 builder.Services.AddScoped<TeamDAO>();
 builder.Services.AddScoped<StudentDAO>();
 builder.Services.AddScoped<CourseDAO>();
+builder.Services.AddScoped<ActivityDAO>();
 builder.Services.AddScoped<UserDAO>();
 
 // Servicio que genera los tokens JWT en el login.
