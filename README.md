@@ -10,6 +10,36 @@ API REST en .NET 8 con arquitectura por capas.
 
 El frontend de la materia está en un repositorio aparte.
 
+## Requisitos
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- MySQL Server 8 (y MySQL Workbench para ver las tablas)
+- La herramienta de migraciones: `dotnet tool install --global dotnet-ef`
+
+## Estructura
+
+```
+CapasApp.sln
+├── Entities/                 → clases del dominio (no referencia a nadie)
+├── DAO/                      → acceso a datos (referencia a Entities)
+│   ├── MockDatabase.cs       → listas en memoria para los ejercicios 1 y 2
+│   ├── UserDAO.cs            → usuarios en MySQL con Entity Framework
+│   └── entity_framework/     → AppDbContext y migraciones
+└── API/                      → controllers, DTOs, JWT (referencia a DAO y Entities)
+```
+
+Regla de las capas: `API → DAO → Entities`. Las capas de abajo nunca conocen a las de arriba.
+
+## Puertos
+
+| Qué | URL |
+|---|---|
+| API (perfil http) | `http://localhost:5006` |
+| Swagger | `http://localhost:5006/swagger` |
+| API (perfil https) | `https://localhost:7250` |
+| Frontend Angular (permitido por CORS) | `http://localhost:4200` |
+| MySQL | `localhost:3306`, base `capasapp` |
+
 ## Entity Framework + MySQL
 
 Paquetes instalados en `DAO` y `API`:
@@ -25,11 +55,11 @@ La connection string está en `API/appsettings.Development.json` (`DefaultConnec
 
 1. Instalar MySQL Server y MySQL Workbench.
 2. Crear el esquema `capasapp` y ajustar usuario/contraseña en `API/appsettings.Development.json`.
-3. Desde la carpeta raíz (donde está `CapasApp.sln`):
+3. Las migraciones ya están en el repo (`DAO/entity_framework/Migrations`: `InitialMigration`, `AddUsers` y
+   `AddTrainerTeamAndOptionalDescription`). Al clonar alcanza con aplicarlas desde la carpeta raíz
+   (donde está `CapasApp.sln`):
 
 ```bash
-dotnet tool install --global dotnet-ef
-dotnet ef migrations add InitialMigration --project DAO --startup-project API --output-dir entity_framework/Migrations
 dotnet ef database update --project DAO --startup-project API
 ```
 
@@ -46,7 +76,8 @@ dotnet ef database update --project DAO --startup-project API
 dotnet run --project API
 ```
 
-Swagger queda disponible en `/swagger`.
+Se abre Swagger en `http://localhost:5006/swagger`. Los datos de Player, Team, Student, etc. viven en
+`MockDatabase` y se pierden al reiniciar la API; los usuarios quedan guardados en MySQL.
 
 ## Ejercicios 1 y 2: Entities, DAO y API
 
@@ -92,6 +123,28 @@ Archivos principales:
 
 Para probar los endpoints protegidos en Swagger: hacer login, copiar el `token`,
 tocar **Authorize** y pegarlo.
+
+### Ejemplo de login
+
+```http
+POST http://localhost:5006/api/User/login
+Content-Type: application/json
+
+{ "email": "usuario@email.com", "password": "MiClave123" }
+```
+
+Respuesta `200 OK`:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "user": { "id": 1, "fullname": "Nombre Apellido", "dni": "...", "email": "usuario@email.com", "username": "..." }
+}
+```
+
+Con email o contraseña incorrectos responde `401` con el mismo mensaje en los dos casos, para no dar pistas.
+Para los endpoints con `[Authorize]`, el token se manda en el encabezado `Authorization: Bearer <token>`
+y vence a los 60 minutos.
 
 El recorrido completo de los datos (Angular → API → MySQL → Angular) está explicado en
 el repo de frontend: `angular/primer-proyecto/RECORRIDO-LOGIN.md`.
