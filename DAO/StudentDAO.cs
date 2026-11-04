@@ -1,9 +1,7 @@
-using Entities; // Para usar la clase Student
+using Entities;
 
 namespace DAO
 {
-    // DAO de alumnos. Mismo patron CRUD que PlayerDAO (ver comentarios alli),
-    // escrito con "=>" en los metodos de una sola linea (ver TeamDAO).
     public class StudentDAO
     {
         // READ: todos los alumnos.
@@ -29,7 +27,7 @@ namespace DAO
             student.Name = updatedStudent.Name;
             student.Age = updatedStudent.Age;
             student.Dni = updatedStudent.Dni;
-            student.File = updatedStudent.File; // Legajo
+            student.File = updatedStudent.File;
             return true;
         }
 

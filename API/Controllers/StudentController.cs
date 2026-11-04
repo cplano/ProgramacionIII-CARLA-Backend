@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Mvc; // Para ControllerBase, [ApiController], [HttpGet], Ok(), NotFound(), etc.
-using Entities;                 // Para usar la clase Student
-using DAO;                      // Para usar StudentDAO
+using Microsoft.AspNetCore.Mvc;
+using Entities;
+using DAO;
 
 namespace API.Controllers
 {
-    // Controller de alumnos. Misma estructura que PlayerController (ver comentarios alli).
-    // URL base: /api/Student
     [Route("api/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
@@ -22,7 +20,7 @@ namespace API.Controllers
         [HttpGet]
         public ActionResult<List<Student>> GetAll()
         {
-            return Ok(_studentDAO.GetAll()); // 200 OK
+            return Ok(_studentDAO.GetAll());
         }
 
         // GET /api/Student/1 -> un alumno por Id.
@@ -30,22 +28,21 @@ namespace API.Controllers
         public ActionResult<Student> GetById(long id)
         {
             var student = _studentDAO.GetById(id);
-            if (student == null) return NotFound(); // 404 Not Found
-            return Ok(student); // 200 OK
+            if (student == null) return NotFound();
+            return Ok(student);
         }
 
-        // POST /api/Student -> crea un alumno (JSON en el cuerpo del pedido).
         [HttpPost]
         public ActionResult<Student> Create([FromBody] Student student)
         {
             // Validacion: nombre y legajo obligatorios ("||" = o).
             if (string.IsNullOrEmpty(student.Name) || string.IsNullOrEmpty(student.File))
             {
-                return BadRequest("El nombre y el legajo son obligatorios."); // 400 Bad Request
+                return BadRequest("El nombre y el legajo son obligatorios.");
             }
 
             var createdStudent = _studentDAO.Create(student);
-            return Created($"/api/student/{createdStudent.Id}", createdStudent); // 201 Created
+            return Created($"/api/student/{createdStudent.Id}", createdStudent);
         }
 
         // PUT /api/Student/1 -> modifica un alumno.
@@ -53,9 +50,9 @@ namespace API.Controllers
         public IActionResult Update(long id, [FromBody] Student student)
         {
             bool updated = _studentDAO.Update(id, student);
-            if (!updated) return NotFound(); // 404 Not Found
+            if (!updated) return NotFound();
 
-            return Ok(student); // 200 OK
+            return Ok(student);
         }
 
         // DELETE /api/Student/1 -> borra un alumno.
@@ -63,9 +60,9 @@ namespace API.Controllers
         public IActionResult Delete(long id)
         {
             bool deleted = _studentDAO.Delete(id);
-            if (!deleted) return NotFound(); // 404 Not Found
+            if (!deleted) return NotFound();
 
-            return NoContent(); // 204 No Content
+            return NoContent();
         }
     }
 }

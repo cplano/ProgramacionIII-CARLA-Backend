@@ -1,18 +1,11 @@
-using Entities; // Para usar las clases de la capa Entities
+using Entities;
 
 namespace DAO
 {
-    // MockDatabase es una base de datos FALSA ("mock" = simulacro) que vive en memoria.
-    // Son listas comunes de C#: los datos se pierden cada vez que se apaga la API.
-    // Se usa para probar los DAO y la API antes de tener una base real (MySQL).
-    //
-    // "static" = hay una sola copia compartida por toda la aplicacion,
-    // y se usa sin crear objetos: MockDatabase.Players
     public static class MockDatabase
     {
         // ---------------- Ejercicio 1 (Deportes) ----------------
 
-        // Lista de jugadores con dos datos de ejemplo cargados desde el inicio.
         public static List<Player> Players { get; set; } = new List<Player>
         {
             new Player { Id = 1, Name = "Lionel Messi", Age = 36, Dni = "11111111", Numero = 10, TeamId = 1 },
@@ -24,7 +17,6 @@ namespace DAO
             new Trainer { Id = 1, Name = "Lionel Scaloni", Age = 45, Dni = "33333333", TeamId = 1 }
         };
 
-        // El equipo con Id = 1 es al que apuntan los jugadores y el entrenador con TeamId = 1.
         public static List<Team> Teams { get; set; } = new List<Team>
         {
             new Team { Id = 1, Name = "Selección Argentina", Category = "Primera A" }
@@ -48,8 +40,8 @@ namespace DAO
                 Id = 1,
                 Title = "TP Arquitectura por Capas",
                 Description = "Implementar DAO y API",
-                Date = DateTime.Now,               // Fecha y hora actual
-                Type = TypeActivity.PracticalWork  // Valor del enum
+                Date = DateTime.Now,
+                Type = TypeActivity.PracticalWork
             }
         };
     }

@@ -2,10 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
 {
-    // DTO para REGISTRAR un usuario nuevo.
-    // Recibe la contraseña en texto plano; el controller la convierte en hash
-    // antes de guardarla. Por eso no se recibe directamente la entidad User
-    // (que tiene PasswordHash en vez de Password).
     public class RegisterDTO
     {
         // StringLength con MinimumLength: entre 3 y 100 caracteres.

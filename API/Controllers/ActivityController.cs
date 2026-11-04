@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Mvc; // Para ControllerBase, [ApiController], [HttpGet], Ok(), NotFound(), etc.
-using Entities;                 // Para usar la clase Activity
-using DAO;                      // Para usar ActivityDAO
+using Microsoft.AspNetCore.Mvc;
+using Entities;
+using DAO;
 
 namespace API.Controllers
 {
-    // Controller de actividades. Misma estructura que PlayerController (ver comentarios alli).
-    // URL base: /api/Activity
     [Route("api/[controller]")]
     [ApiController]
     public class ActivityController : ControllerBase
@@ -22,7 +20,7 @@ namespace API.Controllers
         [HttpGet]
         public ActionResult<List<Activity>> GetAll()
         {
-            return Ok(_activityDAO.GetAll()); // 200 OK
+            return Ok(_activityDAO.GetAll());
         }
 
         // GET /api/Activity/1 -> una actividad por Id.
@@ -30,22 +28,20 @@ namespace API.Controllers
         public ActionResult<Activity> GetById(long id)
         {
             var activity = _activityDAO.GetById(id);
-            if (activity == null) return NotFound(); // 404 Not Found
-            return Ok(activity); // 200 OK
+            if (activity == null) return NotFound();
+            return Ok(activity);
         }
 
-        // POST /api/Activity -> crea una actividad (JSON en el cuerpo del pedido).
-        // La descripcion es opcional; el titulo es obligatorio.
         [HttpPost]
         public ActionResult<Activity> Create([FromBody] Activity activity)
         {
             if (string.IsNullOrEmpty(activity.Title))
             {
-                return BadRequest("El titulo de la actividad es obligatorio."); // 400 Bad Request
+                return BadRequest("El titulo de la actividad es obligatorio.");
             }
 
             var createdActivity = _activityDAO.Create(activity);
-            return Created($"/api/activity/{createdActivity.Id}", createdActivity); // 201 Created
+            return Created($"/api/activity/{createdActivity.Id}", createdActivity);
         }
 
         // PUT /api/Activity/1 -> modifica una actividad.
@@ -53,9 +49,9 @@ namespace API.Controllers
         public IActionResult Update(long id, [FromBody] Activity activity)
         {
             bool updated = _activityDAO.Update(id, activity);
-            if (!updated) return NotFound(); // 404 Not Found
+            if (!updated) return NotFound();
 
-            return Ok(activity); // 200 OK
+            return Ok(activity);
         }
 
         // DELETE /api/Activity/1 -> borra una actividad.
@@ -63,9 +59,9 @@ namespace API.Controllers
         public IActionResult Delete(long id)
         {
             bool deleted = _activityDAO.Delete(id);
-            if (!deleted) return NotFound(); // 404 Not Found
+            if (!deleted) return NotFound();
 
-            return NoContent(); // 204 No Content
+            return NoContent();
         }
     }
 }

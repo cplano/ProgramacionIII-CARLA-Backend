@@ -5,12 +5,9 @@ namespace Entities
     {
         public long Id { get; set; }
         public string Title { get; set; } = string.Empty;
-        // "string?" = opcional (en el diagrama de la consigna figura como "description?").
         public string? Description { get; set; }
-        public DateTime Date { get; set; } // Fecha y hora de la actividad
+        public DateTime Date { get; set; }
 
-        // Tipo de actividad, usando el enum TypeActivity.
-        // En la base se guarda como numero (Exam=0, Homework=1, ...).
         public TypeActivity Type { get; set; }
     }
 }

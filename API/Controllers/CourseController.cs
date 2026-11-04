@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Mvc; // Para ControllerBase, [ApiController], [HttpGet], Ok(), NotFound(), etc.
-using Entities;                 // Para usar la clase Course
-using DAO;                      // Para usar CourseDAO
+using Microsoft.AspNetCore.Mvc;
+using Entities;
+using DAO;
 
 namespace API.Controllers
 {
-    // Controller de cursos. Misma estructura que PlayerController (ver comentarios alli).
-    // URL base: /api/Course
     [Route("api/[controller]")]
     [ApiController]
     public class CourseController : ControllerBase
@@ -22,7 +20,7 @@ namespace API.Controllers
         [HttpGet]
         public ActionResult<List<Course>> GetAll()
         {
-            return Ok(_courseDAO.GetAll()); // 200 OK
+            return Ok(_courseDAO.GetAll());
         }
 
         // GET /api/Course/1 -> un curso por Id.
@@ -30,21 +28,20 @@ namespace API.Controllers
         public ActionResult<Course> GetById(long id)
         {
             var course = _courseDAO.GetById(id);
-            if (course == null) return NotFound(); // 404 Not Found
-            return Ok(course); // 200 OK
+            if (course == null) return NotFound();
+            return Ok(course);
         }
 
-        // POST /api/Course -> crea un curso (JSON en el cuerpo del pedido).
         [HttpPost]
         public ActionResult<Course> Create([FromBody] Course course)
         {
             if (string.IsNullOrEmpty(course.Name))
             {
-                return BadRequest("El nombre del curso es obligatorio."); // 400 Bad Request
+                return BadRequest("El nombre del curso es obligatorio.");
             }
 
             var createdCourse = _courseDAO.Create(course);
-            return Created($"/api/course/{createdCourse.Id}", createdCourse); // 201 Created
+            return Created($"/api/course/{createdCourse.Id}", createdCourse);
         }
 
         // PUT /api/Course/1 -> modifica un curso.
@@ -52,9 +49,9 @@ namespace API.Controllers
         public IActionResult Update(long id, [FromBody] Course course)
         {
             bool updated = _courseDAO.Update(id, course);
-            if (!updated) return NotFound(); // 404 Not Found
+            if (!updated) return NotFound();
 
-            return Ok(course); // 200 OK
+            return Ok(course);
         }
 
         // DELETE /api/Course/1 -> borra un curso.
@@ -62,9 +59,9 @@ namespace API.Controllers
         public IActionResult Delete(long id)
         {
             bool deleted = _courseDAO.Delete(id);
-            if (!deleted) return NotFound(); // 404 Not Found
+            if (!deleted) return NotFound();
 
-            return NoContent(); // 204 No Content
+            return NoContent();
         }
     }
 }

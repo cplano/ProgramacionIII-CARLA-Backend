@@ -1,9 +1,7 @@
-using Entities; // Para usar la clase Course
+using Entities;
 
 namespace DAO
 {
-    // DAO de cursos. Mismo patron CRUD que PlayerDAO (ver comentarios alli),
-    // escrito con "=>" en los metodos de una sola linea (ver TeamDAO).
     public class CourseDAO
     {
         // READ: todos los cursos.

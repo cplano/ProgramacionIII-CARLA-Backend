@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Mvc; // Para ControllerBase, [ApiController], [HttpGet], Ok(), NotFound(), etc.
-using Entities;                 // Para usar la clase Trainer
-using DAO;                      // Para usar TrainerDAO
+using Microsoft.AspNetCore.Mvc;
+using Entities;
+using DAO;
 
 namespace API.Controllers
 {
-    // Controller de entrenadores. Misma estructura que PlayerController (ver comentarios alli).
-    // URL base: /api/Trainer
     [Route("api/[controller]")]
     [ApiController]
     public class TrainerController : ControllerBase
@@ -22,7 +20,7 @@ namespace API.Controllers
         [HttpGet]
         public ActionResult<List<Trainer>> GetAll()
         {
-            return Ok(_trainerDAO.GetAll()); // 200 OK
+            return Ok(_trainerDAO.GetAll());
         }
 
         // GET /api/Trainer/1 -> un entrenador por Id.
@@ -30,21 +28,20 @@ namespace API.Controllers
         public ActionResult<Trainer> GetById(long id)
         {
             var trainer = _trainerDAO.GetById(id);
-            if (trainer == null) return NotFound(); // 404 Not Found
-            return Ok(trainer); // 200 OK
+            if (trainer == null) return NotFound();
+            return Ok(trainer);
         }
 
-        // POST /api/Trainer -> crea un entrenador (JSON en el cuerpo del pedido).
         [HttpPost]
         public ActionResult<Trainer> Create([FromBody] Trainer trainer)
         {
             if (string.IsNullOrEmpty(trainer.Name))
             {
-                return BadRequest("El nombre del entrenador es obligatorio."); // 400 Bad Request
+                return BadRequest("El nombre del entrenador es obligatorio.");
             }
 
             var createdTrainer = _trainerDAO.Create(trainer);
-            return Created($"/api/trainer/{createdTrainer.Id}", createdTrainer); // 201 Created
+            return Created($"/api/trainer/{createdTrainer.Id}", createdTrainer);
         }
 
         // PUT /api/Trainer/1 -> modifica un entrenador.
@@ -52,9 +49,9 @@ namespace API.Controllers
         public IActionResult Update(long id, [FromBody] Trainer trainer)
         {
             bool updated = _trainerDAO.Update(id, trainer);
-            if (!updated) return NotFound(); // 404 Not Found
+            if (!updated) return NotFound();
 
-            return Ok(trainer); // 200 OK
+            return Ok(trainer);
         }
 
         // DELETE /api/Trainer/1 -> borra un entrenador.
@@ -62,9 +59,9 @@ namespace API.Controllers
         public IActionResult Delete(long id)
         {
             bool deleted = _trainerDAO.Delete(id);
-            if (!deleted) return NotFound(); // 404 Not Found
+            if (!deleted) return NotFound();
 
-            return NoContent(); // 204 No Content
+            return NoContent();
         }
     }
 }

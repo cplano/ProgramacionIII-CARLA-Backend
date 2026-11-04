@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Mvc; // Para ControllerBase, [ApiController], [HttpGet], Ok(), NotFound(), etc.
-using Entities;                 // Para usar la clase Team
-using DAO;                      // Para usar TeamDAO
+using Microsoft.AspNetCore.Mvc;
+using Entities;
+using DAO;
 
 namespace API.Controllers
 {
-    // Controller de equipos. Misma estructura que PlayerController (ver comentarios alli).
-    // URL base: /api/Team
     [Route("api/[controller]")]
     [ApiController]
     public class TeamController : ControllerBase
@@ -22,7 +20,7 @@ namespace API.Controllers
         [HttpGet]
         public ActionResult<List<Team>> GetAll()
         {
-            return Ok(_teamDAO.GetAll()); // 200 OK
+            return Ok(_teamDAO.GetAll());
         }
 
         // GET /api/Team/1 -> un equipo por Id.
@@ -30,21 +28,20 @@ namespace API.Controllers
         public ActionResult<Team> GetById(long id)
         {
             var team = _teamDAO.GetById(id);
-            if (team == null) return NotFound(); // 404 Not Found
-            return Ok(team); // 200 OK
+            if (team == null) return NotFound();
+            return Ok(team);
         }
 
-        // POST /api/Team -> crea un equipo (JSON en el cuerpo del pedido).
         [HttpPost]
         public ActionResult<Team> Create([FromBody] Team team)
         {
             if (string.IsNullOrEmpty(team.Name) || string.IsNullOrEmpty(team.Category))
             {
-                return BadRequest("El nombre y la categoria del equipo son obligatorios."); // 400 Bad Request
+                return BadRequest("El nombre y la categoria del equipo son obligatorios.");
             }
 
             var createdTeam = _teamDAO.Create(team);
-            return Created($"/api/team/{createdTeam.Id}", createdTeam); // 201 Created
+            return Created($"/api/team/{createdTeam.Id}", createdTeam);
         }
 
         // PUT /api/Team/1 -> modifica un equipo.
@@ -52,9 +49,9 @@ namespace API.Controllers
         public IActionResult Update(long id, [FromBody] Team team)
         {
             bool updated = _teamDAO.Update(id, team);
-            if (!updated) return NotFound(); // 404 Not Found
+            if (!updated) return NotFound();
 
-            return Ok(team); // 200 OK
+            return Ok(team);
         }
 
         // DELETE /api/Team/1 -> borra un equipo.
@@ -62,9 +59,9 @@ namespace API.Controllers
         public IActionResult Delete(long id)
         {
             bool deleted = _teamDAO.Delete(id);
-            if (!deleted) return NotFound(); // 404 Not Found
+            if (!deleted) return NotFound();
 
-            return NoContent(); // 204 No Content
+            return NoContent();
         }
     }
 }
